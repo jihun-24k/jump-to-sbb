@@ -68,4 +68,13 @@ public class MainController {
     public ArticleDto getArticle( @PathVariable int id){
         return articleDtos.get(id-1);
     }
+
+    @GetMapping("/modifyArticle")
+    @ResponseBody
+    public String modifyArticle(int id, String title, String body){
+        ArticleDto articleDto = articleDtos.get(id-1);
+        articleDto.setTitle(title);
+        articleDto.setBody(body);
+        return "%d번 글이 수정 됐습니다.".formatted(id);
+    }
 }
