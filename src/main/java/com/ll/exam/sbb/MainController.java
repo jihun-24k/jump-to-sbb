@@ -5,10 +5,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
     private int rs = -1;
+    private int i = 0;
+    private List<ArticleDto> articleDtos;
+
+    MainController(){
+        articleDtos = new ArrayList<>();
+    }
 
     @RequestMapping("/sbb")
     @ResponseBody
@@ -44,5 +52,20 @@ public class MainController {
         String value = (String) session.getAttribute(name);
 
         return "세션변수 %s의 값이 %s 입니다.".formatted(name, value);
+    }
+
+    @GetMapping("/addArticle")
+    @ResponseBody
+    public String addArticle(String title, String body) {
+        i++;
+        ArticleDto articleDto = new ArticleDto(i, title, body);
+        articleDtos.add(articleDto);
+        return "%d번 글이 등록됐습니다.".formatted(i);
+    }
+
+    @GetMapping("/article/{id}")
+    @ResponseBody
+    public ArticleDto getArticle( @PathVariable int id){
+        return articleDtos.get(id-1);
     }
 }
