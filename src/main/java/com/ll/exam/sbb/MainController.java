@@ -13,9 +13,11 @@ public class MainController {
     private int rs = -1;
     private int i = 0;
     private List<ArticleDto> articleDtos;
+    private List<Person> personList;
 
     MainController(){
         articleDtos = new ArrayList<>();
+        personList = new ArrayList<>();
     }
 
     @RequestMapping("/sbb")
@@ -76,5 +78,12 @@ public class MainController {
         articleDto.setTitle(title);
         articleDto.setBody(body);
         return "%d번 글이 수정 됐습니다.".formatted(id);
+    }
+
+    @GetMapping("/addPerson/{id}")
+    @ResponseBody
+    public String addPerson(Person person){
+        personList.add(person);
+        return person.toString();
     }
 }
