@@ -33,4 +33,13 @@ class SbbApplicationTests {
 		q2.setCreateDate(LocalDateTime.now());
 		this.questionRepository.save(q2);  // 두번째 질문 저장
 	}
+
+	@Test
+	void testFindAll() {
+		List<Question> all = this.questionRepository.findAll();
+		assertEquals(2, all.size());
+
+		Question q = all.get(0);
+		assertEquals("sbb가 무엇인가요?", q.getSubject());
+	}
 }
