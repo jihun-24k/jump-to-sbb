@@ -1,5 +1,9 @@
-package com.ll.exam.sbb;
+package com.ll.exam.sbb.answer;
 
+import com.ll.exam.sbb.answer.Answer;
+import com.ll.exam.sbb.answer.AnswerRepository;
+import com.ll.exam.sbb.question.Question;
+import com.ll.exam.sbb.question.QuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
