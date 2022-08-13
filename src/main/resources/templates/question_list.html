@@ -1,4 +1,4 @@
-<table>
+<table xmlns:th="http://www.w3.org/1999/xhtml">
     <thead>
     <tr>
         <th>제목</th>
@@ -7,7 +7,9 @@
     </thead>
     <tbody>
     <tr th:each="question : ${questionList}">
-        <td th:text="${question.subject}"></td>
+        <td>
+            <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+        </td>
         <td th:text="${question.createDate}"></td>
     </tr>
     </tbody>
