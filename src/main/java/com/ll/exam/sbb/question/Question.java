@@ -1,13 +1,12 @@
 package com.ll.exam.sbb.question;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.persistence.*;
-
 import com.ll.exam.sbb.answer.Answer;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
