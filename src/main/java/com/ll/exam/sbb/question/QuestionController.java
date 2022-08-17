@@ -34,7 +34,7 @@ public class QuestionController
         return "question_detail";
     }
     @GetMapping("/question/create")
-    public String questionCreate(){
+    public String questionCreate(QuestionForm questionForm){
         return "question_form";
     }
     @PostMapping("/question/create")
