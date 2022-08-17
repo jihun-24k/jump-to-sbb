@@ -2,6 +2,7 @@ package com.ll.exam.sbb.question;
 
 import com.ll.exam.sbb.answer.AnswerForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,9 +23,9 @@ public class QuestionController
     }
 
     @RequestMapping("/question/list")
-    public String showList(Model model) {
-        List<Question> questionList = questionService.findAll();
-        model.addAttribute("questionList",questionList);
+    public String showList(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        Page<Question> paging = this.questionService.getList(page);
+        model.addAttribute("paging", paging);
         return "question_list";
     }
 
