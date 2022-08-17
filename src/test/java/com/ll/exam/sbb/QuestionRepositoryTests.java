@@ -2,6 +2,7 @@ package com.ll.exam.sbb;
 
 import com.ll.exam.sbb.question.Question;
 import com.ll.exam.sbb.question.QuestionRepository;
+import com.ll.exam.sbb.question.QuestionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class QuestionRepositoryTests {
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private QuestionService questionService;
     private static int lastSampleDataId;
 
     @BeforeEach
     void beforeEach() {
         clearData();
         createSampleData();
+    }
+
+    // 테스트 데이터용(한번만 실행)
+    @Test
+    void testJpa() {
+        for (int i = 1; i <= 300; i++) {
+            String subject = String.format("테스트 데이터입니다:[%03d]", i);
+            String content = "내용무";
+            this.questionService.create(subject, content);
+        }
     }
 
     public static int createSampleData(QuestionRepository questionRepository) {
