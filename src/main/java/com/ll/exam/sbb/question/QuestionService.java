@@ -17,9 +17,9 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    public Question findById(int id) {
-        Question q1 = questionRepository.findById(2).get();
-        Question q2 = questionRepository.findById(2).get();
+    public Question findById(Long id) {
+        Question q1 = questionRepository.findById(2L).get();
+        Question q2 = questionRepository.findById(2L).get();
         System.out.println(q2.getAnswerList());
 
         return q2;
@@ -31,7 +31,7 @@ public class QuestionService {
         return this.questionRepository.findAll(pageable);
     }
 
-    public Question getQuestion(Integer id){
+    public Question getQuestion(Long id){
         Optional<Question> question = this.questionRepository.findById(id);
         if (question.isPresent()) {
             return question.get();
