@@ -1,6 +1,5 @@
 package com.ll.exam.sbb.user;
 
-import com.ll.exam.sbb.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,8 +30,17 @@ public class UserController {
                     "2개의 패스워드가 일치하지 않습니다.");
             return "signup_form";
         }
-        userService.create(userCreateForm.getUsername(),
-                userCreateForm.getEmail(), userCreateForm.getPassword1());
+        try {
+            userService.create(userCreateForm.getUserName(),
+                    userCreateForm.getEmail(), userCreateForm.getPassword1());
+
+        }catch (SignupEmailDuplicatedException e) {
+            bindingResult.reject("signupEmailDuplicated", e.getMessage());
+            return "signup_form";
+        }catch (SignupUsernameDuplicatedException e) {
+            bindingResult.reject("signupUsernameDuplicated", e.getMessage());
+            return "signup_form";
+        }
 
         return "redirect:/";
     }
