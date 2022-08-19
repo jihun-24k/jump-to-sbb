@@ -11,10 +11,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void create(String userName, String email, String password)
+    public void create(String username, String email, String password)
             throws SignupEmailDuplicatedException, SignupUsernameDuplicatedException {
         SiteUser siteUser = new SiteUser();
-        siteUser.setUserName(userName);
+        siteUser.setUsername(username);
         siteUser.setEmail(email);
         siteUser.setPassword(passwordEncoder.encode(password));
 
@@ -22,7 +22,7 @@ public class UserService {
         try{
             userRepository.save(siteUser);
         } catch (DataIntegrityViolationException e){
-            if (userRepository.existsByUserName(userName)){
+            if (userRepository.existsByUsername(username)){
                 throw new SignupUsernameDuplicatedException("이미 사용중인 닉네임입니다.");
             }
             if (userRepository.existsByEmail(email)){
