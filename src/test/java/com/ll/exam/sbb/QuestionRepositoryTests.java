@@ -19,7 +19,7 @@ public class QuestionRepositoryTests {
     private QuestionRepository questionRepository;
     @Autowired
     private QuestionService questionService;
-    private static Long lastSampleDataId;
+    private static int lastSampleDataId;
 
     @BeforeEach
     void beforeEach() {
@@ -27,17 +27,17 @@ public class QuestionRepositoryTests {
         createSampleData();
     }
 
-    // 테스트 데이터용(한번만 실행)
-    @Test
-    void testJpa() {
-        for (int i = 1; i <= 300; i++) {
-            String subject = String.format("테스트 데이터입니다:[%03d]", i);
-            String content = "내용무";
-            this.questionService.create(subject, content);
-        }
-    }
+//    // 테스트 데이터용(한번만 실행)
+//    @Test
+//    void testJpa() {
+//        for (int i = 1; i <= 300; i++) {
+//            String subject = String.format("테스트 데이터입니다:[%03d]", i);
+//            String content = "내용무";
+//            this.questionService.create(subject, content);
+//        }
+//    }
 
-    public static Long createSampleData(QuestionRepository questionRepository) {
+    public static int createSampleData(QuestionRepository questionRepository) {
         Question q1 = new Question();
         q1.setSubject("sbb가 무엇인가요?");
         q1.setContent("sbb에 대해서 알고 싶습니다.");
