@@ -18,7 +18,12 @@ public class SecurityConfig {
                 .and()
                 .headers()
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(
-                        XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
+                        XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+                .and()
+                // Login URL 등록
+                .formLogin()
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/");
         return http.build();
     }
 
