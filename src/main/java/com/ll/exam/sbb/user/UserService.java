@@ -1,9 +1,12 @@
 package com.ll.exam.sbb.user;
 
+import com.ll.exam.sbb.question.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +32,13 @@ public class UserService {
                 throw new SignupEmailDuplicatedException("이미 사용중인 이메일입니다.");
             }
         }
+    }
+
+    public SiteUser getUser(String username){
+        Optional<SiteUser> siteUser = userRepository.findByusername(username);
+        if (siteUser.isPresent()){
+            return siteUser.get();
+        }
+        throw new DataNotFoundException("siteuser not found");
     }
 }
