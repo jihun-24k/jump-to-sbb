@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -15,7 +16,7 @@ import java.util.List;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(length = 200)
     private String subject;
@@ -25,9 +26,14 @@ public class Question {
 
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
-    private List<Answer> answerList;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Answer> answerList = new ArrayList<>();
 
     @ManyToOne
     private SiteUser author;
+
+    public void addAnswer(Answer answer) {
+        answer.setQuestion(this);
+        getAnswerList().add(answer);
+    }
 }

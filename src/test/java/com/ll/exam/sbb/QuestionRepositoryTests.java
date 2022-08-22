@@ -1,25 +1,40 @@
 package com.ll.exam.sbb;
 
+import com.ll.exam.sbb.answer.AnswerRepository;
 import com.ll.exam.sbb.question.Question;
 import com.ll.exam.sbb.question.QuestionRepository;
-import com.ll.exam.sbb.question.QuestionService;
+import com.ll.exam.sbb.user.SiteUser;
+import com.ll.exam.sbb.user.UserRepository;
+import com.ll.exam.sbb.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class QuestionRepositoryTests {
     @Autowired
-    private QuestionRepository questionRepository;
+    private UserService userService;
+
     @Autowired
-    private QuestionService questionService;
-    private static int lastSampleDataId;
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    private static long lastSampleDataId;
 
     @BeforeEach
     void beforeEach() {
@@ -27,26 +42,20 @@ public class QuestionRepositoryTests {
         createSampleData();
     }
 
-//    // 테스트 데이터용(한번만 실행)
-//    @Test
-//    void testJpa() {
-//        for (int i = 1; i <= 300; i++) {
-//            String subject = String.format("테스트 데이터입니다:[%03d]", i);
-//            String content = "내용무";
-//            this.questionService.create(subject, content);
-//        }
-//    }
+    public static long createSampleData(UserService userService, QuestionRepository questionRepository) {
+        UserServiceTests.createSampleData(userService);
 
-    public static int createSampleData(QuestionRepository questionRepository) {
         Question q1 = new Question();
         q1.setSubject("sbb가 무엇인가요?");
         q1.setContent("sbb에 대해서 알고 싶습니다.");
+        q1.setAuthor(new SiteUser(2L));
         q1.setCreateDate(LocalDateTime.now());
         questionRepository.save(q1);
 
         Question q2 = new Question();
         q2.setSubject("스프링부트 모델 질문입니다.");
         q2.setContent("id는 자동으로 생성되나요?");
+        q2.setAuthor(new SiteUser(2L));
         q2.setCreateDate(LocalDateTime.now());
         questionRepository.save(q2);
 
@@ -54,16 +63,15 @@ public class QuestionRepositoryTests {
     }
 
     private void createSampleData() {
-        lastSampleDataId = createSampleData(questionRepository);
+        lastSampleDataId = createSampleData(userService, questionRepository);
     }
 
-    public static void clearData(QuestionRepository questionRepository) {
-        questionRepository.deleteAll(); // DELETE FROM question;
-        questionRepository.truncateTable();
+    public static void clearData(UserRepository userRepository, AnswerRepository answerRepository, QuestionRepository questionRepository) {
+        UserServiceTests.clearData(userRepository, answerRepository, questionRepository);
     }
 
     private void clearData() {
-        clearData(questionRepository);
+        clearData(userRepository, answerRepository, questionRepository);
     }
 
     @Test
@@ -71,12 +79,14 @@ public class QuestionRepositoryTests {
         Question q1 = new Question();
         q1.setSubject("sbb가 무엇인가요?");
         q1.setContent("sbb에 대해서 알고 싶습니다.");
+        q1.setAuthor(new SiteUser(2L));
         q1.setCreateDate(LocalDateTime.now());
         questionRepository.save(q1);
 
         Question q2 = new Question();
         q2.setSubject("스프링부트 모델 질문입니다.");
         q2.setContent("id는 자동으로 생성되나요?");
+        q2.setAuthor(new SiteUser(2L));
         q2.setCreateDate(LocalDateTime.now());
         questionRepository.save(q2);
 
@@ -115,6 +125,15 @@ public class QuestionRepositoryTests {
     }
 
     @Test
+    void findAllPageable() {
+        // Pageble : 한 페이지에 몇개의 아이템이 나와야 하는지 + 현재 몇 페이지인지)
+        Pageable pageable = PageRequest.of(0, (int) lastSampleDataId);
+        Page<Question> page = questionRepository.findAll(pageable);
+
+        assertThat(page.getTotalPages()).isEqualTo(1);
+    }
+
+    @Test
     void findBySubject() {
         Question q = questionRepository.findBySubject("sbb가 무엇인가요?");
         assertThat(q.getId()).isEqualTo(1);
@@ -133,5 +152,21 @@ public class QuestionRepositoryTests {
         Question q = qList.get(0);
 
         assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
+    }
+
+    @Test
+    void createManySampleData() {
+        boolean run = false;
+
+        if (run == false) return;
+
+        IntStream.rangeClosed(3, 300).forEach(id -> {
+            Question q = new Question();
+            q.setSubject("%d번 질문".formatted(id));
+            q.setContent("%d번 질문의 내용".formatted(id));
+            q.setAuthor(new SiteUser(2L));
+            q.setCreateDate(LocalDateTime.now());
+            questionRepository.save(q);
+        });
     }
 }

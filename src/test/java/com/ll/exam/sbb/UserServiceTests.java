@@ -11,30 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class UserRepositoryTests {
+public class UserServiceTests {
     @Autowired
     private UserService userService;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private AnswerRepository answerRepository;
+
     @Autowired
     private QuestionRepository questionRepository;
 
     @BeforeEach
-    public void beforeEach(){
+    void beforeEach() {
         clearData();
         createSampleData();
-    }
-    public static void clearData(UserRepository userRepository, AnswerRepository answerRepository, QuestionRepository questionRepository) {
-        AnswerRepositoryTests.clearData(answerRepository, questionRepository);
-        QuestionRepositoryTests.clearData(questionRepository);
-        userRepository.deleteAll(); // DELETE FROM site_user;
-        userRepository.truncateTable();
-    }
-
-    private void clearData() {
-        clearData(userRepository, answerRepository, questionRepository);
     }
 
     public static void createSampleData(UserService userService) {
@@ -46,9 +39,24 @@ public class UserRepositoryTests {
         createSampleData(userService);
     }
 
+    public static void clearData(UserRepository userRepository, AnswerRepository answerRepository, QuestionRepository questionRepository) {
+        answerRepository.deleteAll();
+        answerRepository.truncateTable();
+
+        questionRepository.deleteAll();
+        questionRepository.truncateTable();
+
+        userRepository.deleteAll();
+        userRepository.truncateTable();
+    }
+
+    private void clearData() {
+        clearData(userRepository, answerRepository, questionRepository);
+    }
 
     @Test
     @DisplayName("회원가입이 가능하다.")
-    public void t1(){
+    public void t1() {
+        userService.create("user2", "user2@email.com", "1234");
     }
 }
