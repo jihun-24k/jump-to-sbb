@@ -5,6 +5,7 @@ import com.ll.exam.sbb.user.SiteUser;
 import com.ll.exam.sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,10 +39,13 @@ public class QuestionController
         model.addAttribute("question", question);
         return "question_detail";
     }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/question/create")
     public String questionCreate(QuestionForm questionForm){
         return "question_form";
     }
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/question/create")
     public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
         // 만약 폼에서 받아온 데이터가 오류가 있다면?
