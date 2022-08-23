@@ -33,7 +33,7 @@
         <div class="card-body">
             <div class="card-text" style="white-space: pre-line;" th:text="${answer.content}"></div>
             <div class="my-3">
-                <a th:href="@{|/answer/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
+                <a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
                    th:text="수정"></a>
