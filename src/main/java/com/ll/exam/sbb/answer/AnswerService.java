@@ -38,6 +38,7 @@ public class AnswerService {
 
     public void modify(Answer answer, String content) {
         answer.setContent(content);
+        answer.setModifyDate(LocalDateTime.now());
         this.answerRepository.save(answer);
     }
 }
