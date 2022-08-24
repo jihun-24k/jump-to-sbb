@@ -26,7 +26,7 @@ public class QuestionService {
 
         return q2;
     }
-    public Page<Question> getList(String kw, int page) {
+    public Page<Question> getList(String kw, String kw_, int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
@@ -34,7 +34,7 @@ public class QuestionService {
             return questionRepository.findAll(pageable);
         }
 
-        return questionRepository.findBySubjectContains(kw, pageable);
+        return questionRepository.findBySubjectContainsOrContentContains(kw, kw_, pageable);
     }
 
     public Question getQuestion(Long id){

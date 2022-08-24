@@ -30,7 +30,7 @@ public class QuestionController
 
     @RequestMapping("/question/list")
     public String showList(String kw, Model model, @RequestParam(value="page", defaultValue="0") int page) {
-        Page<Question> paging = this.questionService.getList(kw, page);
+        Page<Question> paging = this.questionService.getList(kw, kw, page);
         model.addAttribute("paging", paging);
         return "question_list";
     }
