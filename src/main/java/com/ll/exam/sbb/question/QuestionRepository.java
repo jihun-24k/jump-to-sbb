@@ -16,6 +16,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long>, Repos
     List<Question> findBySubjectLike(String subject);
     Page<Question> findAll(Pageable pageable);
 
+    Page<Question> findBySubjectContains(String kw, Pageable pageable);
+
     @Transactional
     @Modifying
     @Query(value = "ALTER TABLE question AUTO_INCREMENT = 1", nativeQuery = true)
