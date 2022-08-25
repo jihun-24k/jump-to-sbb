@@ -89,7 +89,7 @@ public class QuestionController
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/question/delete/{id}")
+    @DeleteMapping("/question/delete/{id}")
     public String questionDelete(@PathVariable Long id, Principal principal){
         Question question = this.questionService.getQuestion(id);
         if (!question.getAuthor().getUsername().equals(principal.getName())){
