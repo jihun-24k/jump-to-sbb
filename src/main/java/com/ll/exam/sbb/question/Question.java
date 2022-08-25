@@ -38,6 +38,8 @@ public class Question {
     @ManyToMany
     private Set<SiteUser> voter;
 
+    private int hit;
+
     public void addAnswer(Answer answer) {
         answer.setQuestion(this);
         getAnswerList().add(answer);
